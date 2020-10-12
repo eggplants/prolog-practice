@@ -64,4 +64,5 @@ b2_sumup(N, X) :-
 gennum(0).
 gennum(N) :-
     gennum(N1),
-    N is N1 + 1.
+    N is N1 + 1. % ここ自体ではfailせず、
+                 % 外部のNに関する条件が落ちたらgennumのNに値が返る.
