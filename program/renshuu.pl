@@ -37,27 +37,27 @@ X is 1 + 2.  % X = 3.
 % 練習5-2: my_length/2
 
 my_length([], 0).
-my_length([_|A], ANS) :-
+my_length([_|A], LENGTH) :-
     my_length(A, N),
-    ANS is N + 1.
+    LENGTH is N + 1.
 
 % 練習6: sumup/2の修正b1_sumup/2
 
 b1_sumup(1, 1).
 b1_sumup(N, X) :-
-    N < 1,
-    N1 is N - 1,
-    sumup(N1, X1),
-    X is N + X1.
+    N > 1,
+    M is N - 1,
+    b1_sumup(M, Y),
+    X is N + Y.
 
 % 練習7: sumup/2の修正b2_sum
 
 b2_sumup(1, 1).
 b2_sumup(N, X) :-
-    !, N > 1,
-    N1 is N - 1,
-    sumup(N1, X1),
-    X is N + X1.
+    M is N - 1,
+    b2_sumup(M, Y),
+    X is N + Y, !,
+    X > 0.
 
 % 練習8: gennum/1
 
