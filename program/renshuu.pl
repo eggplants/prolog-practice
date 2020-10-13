@@ -7,12 +7,19 @@ parent(hanako, shiro).
 parent(saburo, ishiro).
 parent(shiro, goro).
 
-brother(X, Y) :- parent(A, X), parent(B, Y), A = B, X \= Y.
+brother(X, Y) :-
+    parent(A, X),
+    parent(B, Y),
+    A = B,
+    X \= Y.
 
 % 練習2: ancestor/2
 
-ancestor(X, Y) :- parent(X, Y).
-ancestor(X, Z) :- parent(X, Y), parent(Y, Z).
+ancestor(X, Y) :-
+    parent(X, Y).
+ancestor(X, Z) :-
+    parent(X, Y),
+    parent(Y, Z).
 
 % 練習3: first/2, second/2, third/2
 
@@ -23,7 +30,8 @@ third(A, [_, _, A| _]).
 % 練習4: my_member/2
 
 my_member(A, [A | _]).
-my_member(A, [B | _]) :- my_member(A, B).
+my_member(A, [B | _]) :-
+    my_member(A, B).
 
 % 練習5-1:
 
@@ -50,7 +58,7 @@ b1_sumup(N, X) :-
     b1_sumup(M, Y),
     X is N + Y.
 
-% 練習7: sumup/2の修正b2_sum
+% 練習7: sumup/2の修正b2_sumup/2
 
 b2_sumup(1, 1).
 b2_sumup(N, X) :-
