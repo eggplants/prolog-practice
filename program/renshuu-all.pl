@@ -30,7 +30,7 @@ third(A, [_, _, A| _]).
 % 練習4: my_member/2
 
 my_member(A, [A | _]).
-my_member(A, [B | _]) :-
+my_member(A, [_ | B]) :-
     my_member(A, B).
 
 % 練習5-1:
@@ -60,11 +60,11 @@ b1_sumup(N, X) :-
 
 % 練習7: sumup/2の修正b2_sumup/2
 
-b2_sumup(1, 1).
+b2_sumup(1, 1) :- !.
 b2_sumup(N, X) :-
     M is N - 1,
     b2_sumup(M, Y),
-    X is N + Y, !,
+    X is N + Y,
     X > 0.
 
 % 練習8: gennum/1
