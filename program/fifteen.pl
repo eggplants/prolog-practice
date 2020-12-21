@@ -12,7 +12,7 @@
 %   偶置換でだめ,
 %   目標A(a_x, a_y), 現在B(b_x, b_y),
 %   H=Σ{abs(a_x-b_x)+abs(a_y-b_y)}.
-%   
+%
 
 % 盤面定義
 top(1). top(2). top(3). top(4).
@@ -57,34 +57,37 @@ parity(L, Goal, [S|Ss], Parity) :-
 
 
 % 解く
-iddfs(L, _, _, _, Goal, 0) :- L = Goal.
-iddfs(Board, MaxDep, Dep, PreBoard, Goal, Count) :-
+ida(L, _, _, _, Goal, 0) :- L = Goal.
+ida(Board, MaxDep, Dep, PreBoard, Goal, Count) :-
     Dep > 0, NxtDep is Dep - 1,               % 深さ禁止条件
     nth1(Idx, Board, 0),                      % 値0の升の場所の特定
     movable(Idx, NxtIdx), Idx \= NxtIdx,      % 移動先の選定
     swap(Board, Idx, NxtIdx, NxtBoard),       % 升を入れ替えて次の盤面を得る
-    NxtBoard \= PreBoard,                     % 戻る手を禁止
     parity(NxtBoard, Goal, Goal, H),          % マンハッタン距離
-    H + MaxDep-Dep =< Dep,                          % 枝狩り
-    iddfs(NxtBoard, MaxDep, NxtDep, Board, Goal, NxtCount),!, % 再帰
+    H + MaxDep-Dep =< Dep,                    % 枝狩り
+    NxtBoard \= PreBoard,                     % 戻る手を禁止
+    ida(NxtBoard, MaxDep, NxtDep, Board, Goal, NxtCount),!, % 再帰
     Count is NxtCount + 1,
     writeln(iddfs(NxtBoard)).
 
 solve(L, Dep, Count) :-
     Goal = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0],
-    parity(L, Goal, Goal, Parity),
-    mod(Parity, 2) \= 0,
-    iddfs(L, Dep, Dep, [], Goal, Count).
+    ida(L, Dep, Dep, [], Goal, Count).
 
 gennum(0, _).
 gennum(N, D) :-
     D > 0, D1 is D - 1,
     gennum(N1, D1),
-    N is N1 + 1.
+    N is N1 + 2.
 
 try_solve(L, Max, Count) :-
+    Goal = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0],
+    parity(L, Goal, Goal, Parity),
+    % mod(Parity, 2) \= 0,
     gennum(N, Max),
-    writeln(N),
+    % writeln(Parity),
+    N > Parity,
+    % writeln(N),
     solve(L, N, Count).
 
 test(1, A) :-
@@ -93,3 +96,4 @@ test(2, B) :-
     time(try_solve([1, 2, 3, 0, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 4], 50, B)).
 test(3, C) :-
     time(try_solve([1, 0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 2], 50, C)).
+
